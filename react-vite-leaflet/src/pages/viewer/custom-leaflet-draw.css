@@ -1,0 +1,39 @@
+.leaflet-draw-tooltip .leaflet-draw-tooltip-subtext {
+    display: none !important;
+}
+
+.leaflet-draw-tooltip br {
+    display: none !important;
+}
+
+.leaflet-draw-toolbar.leaflet-bar {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+/* Стили для объединенной панели инструментов */
+.leaflet-draw-toolbar.leaflet-bar {
+    display: flex; /* Используем flexbox для выравнивания элементов */
+    flex-direction: column; /* Выстраиваем элементы в колонку */
+    align-items: flex-start; /* Выравниваем элементы по началу контейнера */
+}
+
+.leaflet-draw.leaflet-control {
+    margin: 0px 10px;
+}
+
+.leaflet-control-custom {
+    position: absolute;
+    top: 250px; 
+    left: 10px; 
+    z-index: 1000;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 2px solid #ccc;   
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    
+}
