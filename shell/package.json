@@ -9,6 +9,9 @@
     "serve": "webpack serve --mode production"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",

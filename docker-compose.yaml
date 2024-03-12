@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  shell:
+    build:
+      context: ./shell
+    ports:
+      - "3000:3000"
+    networks:
+      - microservices-network
+
+  track:
+    build:
+      context: ./track
+    ports:
+      - "5001:5001"
+    networks:
+      - microservices-network
+
+  authorization:
+    build:
+      context: ./authorization
+    ports:
+      - "5002:5002"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
