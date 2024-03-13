@@ -67,9 +67,9 @@ module.exports = {
     publicPath,
   },
   devServer: {
+    host: '0.0.0.0',
     port: 5001,
     open: true,
-    hot: true,
     static: {
       directory: path.join(__dirname, 'dist'),
     },
@@ -77,6 +77,7 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    allowedHosts: 'all',
   },  
   performance: {
     hints: false,

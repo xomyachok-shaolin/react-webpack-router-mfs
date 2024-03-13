@@ -62,6 +62,7 @@ module.exports = {
     publicPath,
   },
   devServer: {
+    host: '0.0.0.0',
     port: 5002,
     open: true,
     hot: true,
@@ -72,6 +73,7 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    allowedHosts: 'all',
   },  
   performance: {
     hints: false,
