@@ -24,14 +24,13 @@ const initialValues: LoginParams = {
 };
 
 const LoginForm: FC = () => {
-  const loginMutation = useLogin();
-  const navigate = useNavigate();// @ts-ignore
-  const location = useLocation() as Location<{ from: string }>;
-
-  // const dispatch = useAppDispatch();
 
   const onFinished = async (form: LoginParams) => {
-    window.location.href = "http://localhost:3000/track";   
+    const navigateTo = (path) => {
+      const navigateEvent = new CustomEvent('[app1] navigated', { detail: path });
+      window.dispatchEvent(navigateEvent);
+    };    
+    navigateTo('/track');
   };
 
   return (

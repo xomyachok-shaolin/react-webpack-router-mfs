@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { mount } from "appLogin/AppLoginIndex";
-import { app1RoutingPrefix } from "../routing/constants";
+import { app1RoutingPrefix, app2RoutingPrefix } from "../routing/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const app1Basename = `/${app1RoutingPrefix}`;
+const app2Basename = `/${app2RoutingPrefix}`;
 
 export default () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,12 @@ export default () => {
   // Listen for shell location changes and dispatch a notification.
   useEffect(
     () => {
+
       if (location.pathname.startsWith(app1Basename)) {
+
+        if (location.pathname.split(app1Basename)[1] == app2Basename)
+          navigate(app2Basename)
+
         window.dispatchEvent(
           new CustomEvent("[shell] navigated", {
             detail: location.pathname.replace(app1Basename, ""),

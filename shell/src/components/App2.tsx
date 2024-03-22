@@ -46,7 +46,7 @@ export default () => {
 
   const isFirstRunRef = useRef(true);
   const unmountRef = useRef(() => {});
-  // Mount app1 MFE
+  // Mount app2 MFE
   useEffect(
     () => {
       if (!isFirstRunRef.current) {
