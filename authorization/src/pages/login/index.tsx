@@ -17,6 +17,10 @@ window.type = ''
 import drawLocales from 'leaflet-draw-locales'
 drawLocales('ru')
 
+
+import { notification } from "antd";
+import "antd/dist/antd.css";
+
 const initialValues: LoginParams = {
   username: "guest",
   password: "guest",
@@ -25,15 +29,29 @@ const initialValues: LoginParams = {
 
 const LoginForm: FC = () => {
 
+  const [api, contextHolder] = notification.useNotification();
+  const showNotification = () => {
+    api.open({
+      message: "Test title",
+      description: "Test description",
+      placement: "topRight"
+    });
+  };
+
   const onFinished = async (form: LoginParams) => {
-    const navigateTo = (path) => {
-      const navigateEvent = new CustomEvent('[app1] navigated', { detail: path });
-      window.dispatchEvent(navigateEvent);
-    };    
-    navigateTo('/track');
+
+    showNotification();
+
+    // const navigateTo = (path) => {
+    //   const navigateEvent = new CustomEvent('[app1] navigated', { detail: path });
+    //   window.dispatchEvent(navigateEvent);
+    // };    
+    // navigateTo('/track');
   };
 
   return (
+    <>
+    {contextHolder}
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.header}>
@@ -76,6 +94,7 @@ const LoginForm: FC = () => {
         </Form>
       </div>
       </div>
+      </>
   );
 };
 
