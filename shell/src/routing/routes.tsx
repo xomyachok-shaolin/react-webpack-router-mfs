@@ -23,6 +23,10 @@ export const routes: RouteObject[] = [
         path: `/${app2RoutingPrefix}/*`,
         element: <Suspense fallback="Loading App2..."><App2Lazy /></Suspense>,
       },
+      {
+        path: '*',
+        element: <Navigate to={`/${app1RoutingPrefix}`} />,
+      },
     ],
   }
 ];
