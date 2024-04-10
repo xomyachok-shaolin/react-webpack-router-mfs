@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const { Text, Title } = Typography;
 
 
-  const TableList: FC = ({ }) => {
+const TableList: FC = ({ }) => {
 
   const addBtn = useRef(null);
 
@@ -22,10 +22,53 @@ const { Text, Title } = Typography;
     undefined
   );
 
+
+  const data = [
+    'TechUI',
+    'TechUI 2.0',
+    'Bigfish',
+    'Umi',
+    'Ant Design Pro',
+  ].map((item) => ({
+    title: item,
+    subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
+    actions: [<a key="run">邀请</a>, <a key="delete">删除</a>],
+    avatar:
+      'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
+    content: (
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <div
+          style={{
+            width: 200,
+          }}
+        >
+          <div>发布中</div>
+          <Progress percent={80} />
+        </div>
+      </div>
+    ),
+  }));
+
+  const renderListWithButton = () => {
+    const listDataForRendering = [
+      { id: 'button', type: 'button' }, // Специальный элемент для кнопки "Создать"
+      ...data, // Ваши реальные данные
+    ];
+
+    return listDataForRendering;
+
+  };
+
   const [pagination, setPagination] = useState<Partial<PaginationProps>>({
     current: 1,
     pageSize: 10,
-    total: 0,
+    total: data.length,
+    showSizeChanger: true,
+    pageSizeOptions: ['10', '20', '50', '100'],
   });
 
   // const { data, error, isLoading, refetch } = useGetProjects(pagination, filters);
@@ -35,6 +78,7 @@ const { Text, Title } = Typography;
   const { mutateAsync: batchDelete } = useBatchDeleteProject();
 
   const showModal = () => {
+    setAddBtnblur();
     setVisible(true);
     setCurrent(undefined);
   };
@@ -48,6 +92,7 @@ const { Text, Title } = Typography;
     if (addBtn.current) {
       // eslint-disable-next-line react/no-find-dom-node
       const addBtnDom = findDOMNode(addBtn.current) as HTMLButtonElement;
+      console.log(addBtnDom)
       setTimeout(() => addBtnDom.blur(), 0);
     }
   };
@@ -116,51 +161,13 @@ const { Text, Title } = Typography;
     }
   };
 
-
-  const data = [
-    'TechUI',
-    'TechUI 2.0',
-    'Bigfish',
-    'Umi',
-    'Ant Design Pro',
-  ].map((item) => ({
-    title: item,
-    subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
-    actions: [<a key="run">邀请</a>, <a key="delete">删除</a>],
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-    content: (
-      <div
-        style={{
-          flex: 1,
-        }}
-      >
-        <div
-          style={{
-            width: 200,
-          }}
-        >
-          <div>发布中</div>
-          <Progress percent={80} />
-        </div>
-      </div>
-    ),
-  }));
-
-  // title, description, updatedAt, evaluated, predicted, action
-  const listData = [
-    { id: 1, title: 'item 1', updatedAt: '1-1-2023', description: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg' },
-    { id: 2, title: 'item 2' },
-    { id: 3, title: 'item 3' },
-  ];
-
   const navigate = useNavigate()
 
   return (
     <PageContainer>
-      <Button style={{ marginBottom: '10px' }} type="primary" key="primary" onClick={showModal}>
+      {/* <Button ref={addBtn} style={{ marginBottom: '10px' }} type="primary" key="primary" onClick={showModal}>
         <PlusOutlined /> Создать
-      </Button>
+      </Button> */}
       <ProList<any>
         ghost
         // itemCardProps={{
@@ -168,73 +175,97 @@ const { Text, Title } = Typography;
         //   style: { backgroundColor: "#FA8072ff", border: 0, },
         //   bodyStyle: { backgroundColor: '#FA807280', border: 0, borderRadius: "3px" }
         // }}
-        renderItem={(item) => (
-          <List.Item>
-            <Card
-              style={{
-                borderRadius: "7px",
-                overflow: "hidden",
-                border: 0,
-              }}
-              hoverable
-              onClick={()=>{startTransition(() => {
-                navigate('/projects/id');
-              });}}
+        renderItem={(item) => {
+          if (item.type === 'button') {
+            // Render the "Создать" button as the first item
+            return (
+              <List.Item>
+                <Button style={{ width: '100%', justifyContent: 'start' }} type="primary" onClick={showModal}>
+                  <PlusOutlined /> Создать
+                </Button>
+              </List.Item>
+            );
+          } else {
+            // Render your normal list item
+            return (
+              <List.Item>
+                <Card
+                  style={{
+                    borderRadius: "7px",
+                    overflow: "hidden",
+                    border: 0,
+                  }}
+                  hoverable
+                  onClick={() => {
+                    startTransition(() => {
+                      navigate('/projects/id');
+                    });
+                  }}
 
-              headStyle={{ backgroundColor: '#8A2BE2', color: "#ffffff" }}
-              // 30=4D, 35=59, 40=66, 50=80, 55=8C, 60=99, 65=A6, 70=B3, 75=BF, 80=CC, 85=D9
-              bodyStyle={{
-                backgroundColor: '#8A2BE2' + '4D',
-                color: "#646676",
-                wordWrap: "break-word"
-              }}
-              title={
-              <div>
-              <Title style={{color:"#fff"}} level={5}>{item.title}</Title>
-              <Text type="secondary" style={{color:"#fff", fontSize: "70%"}}>26.12.2023</Text>
-              </div>
-              }
-              extra={
-                <Space>
-                  <Space>
-                    <RobotFilled style={{ color: "#ffffff" }} />
-                    <RobotOutlined style={{ color: "#ffffff" }} />
-                    <UserOutlined style={{ color: "#ffffff" }} />
-                  </Space>
-                  <Dropdown
-                    overlay={
-                      <Menu>
-                         {/* @ts-ignore */}
-                        <Menu.Item key="1" items={[
-                          <a target="_blank" rel="noopener noreferrer" href="">
-                            редактировать
-                          </a>
-                        ]}>
-                          редактировать
-                        </Menu.Item>
-                        {/* @ts-ignore */}
-                        <Menu.Item key="2" danger items={['удалить']}>
-                          удалить
-                        </Menu.Item>
-                      </Menu>
-                    }
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <EllipsisOutlined style={{ float: "right", color: "#ffffff" }} />
-                    </a>
-                  </Dropdown>
-                  
-                </Space>
-              }>
+                  headStyle={{ backgroundColor: '#8A2BE2', color: "#ffffff" }}
+                  // 30=4D, 35=59, 40=66, 50=80, 55=8C, 60=99, 65=A6, 70=B3, 75=BF, 80=CC, 85=D9
+                  bodyStyle={{
+                    backgroundColor: '#8A2BE2' + '4D',
+                    color: "#646676",
+                    wordWrap: "break-word"
+                  }}
+                  title={
+                    <div>
+                      <Title style={{ color: "#fff" }} level={5}>{item.title}</Title>
+                      <Text type="secondary" style={{ color: "#fff", fontSize: "70%" }}>26.12.2023</Text>
+                    </div>
+                  }
+                  extra={
+                    <Space>
+                      <Space>
+                        <RobotFilled style={{ color: "#ffffff" }} />
+                        <RobotOutlined style={{ color: "#ffffff" }} />
+                        <UserOutlined style={{ color: "#ffffff" }} />
+                      </Space>
+                      <Dropdown
+                        overlay={
+                          <Menu>
+                            {/* @ts-ignore */}
+                            <Menu.Item key="1" items={[
+                              <a target="_blank" rel="noopener noreferrer" href="">
+                                редактировать
+                              </a>
+                            ]}>
+                              редактировать
+                            </Menu.Item>
+                            {/* @ts-ignore */}
+                            <Menu.Item key="2" danger items={['удалить']}>
+                              удалить
+                            </Menu.Item>
+                          </Menu>
+                        }
+                      >
+                        <a onClick={(e) => e.preventDefault()}>
+                          <EllipsisOutlined style={{ float: "right", color: "#ffffff" }} />
+                        </a>
+                      </Dropdown>
 
-              <div>{item.description}</div>
-              <div style={{ paddingTop: '24px' }}>{item.updatedAt}</div>
-            </Card>
-          </List.Item>
-        )}
+                    </Space>
+                  }>
+
+                  <div>{item.description}</div>
+                  <div style={{ paddingTop: '24px' }}>{item.updatedAt}</div>
+                </Card>
+              </List.Item>)
+            }
+          }
+        }
+        
         pagination={{
-          defaultPageSize: 8,
-          showSizeChanger: false,
+          ...pagination,
+          onChange(page, pageSize) {
+            console.log(page);
+            setPagination((prevPagination) => ({
+              ...prevPagination,
+              current: page.current,
+              pageSize: page.pageSize,
+            }));
+          },
         }}
         //showActions="hover"
         rowSelection={{}}
@@ -257,6 +288,8 @@ const { Text, Title } = Typography;
             },
           };
         }}
+
+
         metas={{
           title: {},
           subTitle: {},
@@ -268,7 +301,7 @@ const { Text, Title } = Typography;
           },
         }}
         // headerTitle="卡片列表展示"
-        dataSource={listData}
+        dataSource={renderListWithButton()}
       />
 
       <OperationModal
